@@ -1,2 +1,3 @@
+pyenchant
 pytest
 termcolor
