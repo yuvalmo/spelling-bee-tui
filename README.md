@@ -13,7 +13,7 @@ My own version of the *New York Time's Spelling Bee*.
 * [ ] Check if word is real using real dictionary
 
 ## UI
-* [ ] Highlight word correctly
+* [v] Highlight word correctly
 * [ ] Display:
     - Word list
     - Pangrams in bold
