@@ -9,7 +9,7 @@ My own version of the *New York Time's Spelling Bee*.
     - Contains central letter
     - Contains only valid letters
 * [v] Check if word is pangram
-* [ ] Check if word is real using real dictionary
+* [v] Check if word is real using real dictionary
 
 ## UI
 * [v] Highlight word correctly

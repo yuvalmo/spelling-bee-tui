@@ -1,8 +1,13 @@
 from src.checker import WordChecker
+from src.dictionary import NullDict
+
+
+def checker():
+    return WordChecker("a", "bcde", d=NullDict())
 
 
 def test_has_enough_letters():
-    wc = WordChecker("a", "bcde")
+    wc = checker()
 
     assert not wc.check("a")
     assert not wc.check("ab")
@@ -13,7 +18,7 @@ def test_has_enough_letters():
 
 
 def test_contains_central_letter():
-    wc = WordChecker("a", "bcde")
+    wc = checker()
 
     assert not wc.check("bcde")
     assert not wc.check("cbde")
@@ -26,7 +31,7 @@ def test_contains_central_letter():
 
 
 def test_contains_only_valid_letters():
-    wc = WordChecker("a", "bcde")
+    wc = checker()
 
     assert not wc.check("abcdef")
     assert not wc.check("afcbde")
@@ -35,7 +40,7 @@ def test_contains_only_valid_letters():
 
 
 def test_cannot_contain_whitespace():
-    wc = WordChecker("a", "bcde")
+    wc = checker()
 
     assert not wc.check("a bcde")
     assert not wc.check("ab cde")
@@ -45,7 +50,7 @@ def test_cannot_contain_whitespace():
 
 
 def test_is_pangram():
-    wc = WordChecker("a", "bcde")
+    wc = checker()
 
     assert not wc.is_pangram("abcd")
     assert not wc.is_pangram("abce")
