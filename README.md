@@ -10,6 +10,7 @@ My own version of the *New York Time's Spelling Bee*.
     - Contains only valid letters
 * [v] Check if word is pangram
 * [v] Check if word is real using real dictionary
+* [ ] Grade word
 
 ## UI
 * [v] Highlight word correctly
