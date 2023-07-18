@@ -1,0 +1,30 @@
+
+
+class WordChecker:
+    ''' Checks if word is valid.
+    '''
+    def __init__(self, central: str,
+                       letters: str) -> None:
+        self._central = central
+        self._letters = set(central + letters)
+
+    def check(self, word: str) -> bool:
+        if len(word) < 4:
+            return False
+
+        # Must contain central letter
+        if self._central not in word:
+            return False
+
+        # Must contain only chosen letters
+        if set(word) - self._letters:
+            return False
+
+        # TODO: Check with word dictionary
+        
+        return True
+
+    def is_pangram(self, word: str) -> bool:
+        return all(
+            l in word for l in self._letters
+        )

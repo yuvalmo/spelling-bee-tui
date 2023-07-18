@@ -4,12 +4,11 @@ My own version of the *New York Time's Spelling Bee*.
 # To Do
 
 ## Game Logic
-* [ ] Check if word is valid:
+* [v] Check if word is valid:
+    - Contains at least 4 letters
     - Contains central letter
     - Contains only valid letters
-    - Contains at leasst 4 letters
-    - Is a real word
-* [ ] Check if word is pangram
+* [v] Check if word is pangram
 * [ ] Check if word is real using real dictionary
 
 ## UI
