@@ -1,3 +1,6 @@
 pyenchant
 pytest
 termcolor
+textual
+textual-dev
+# add rich?

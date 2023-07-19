@@ -1,4 +1,4 @@
-.PHONY: test clean
+.PHONY: test app clean
 
 default: test
 
@@ -7,6 +7,9 @@ install:
 
 test:
 	pytest test $(ARGS)
+
+app:
+	textual run app.py
 
 clean:
 	git clean -xfd

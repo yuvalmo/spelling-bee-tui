@@ -1,0 +1,29 @@
+Screen {
+    layout: grid;
+    grid-size: 4 6;
+}
+
+.box {
+    height: 100%;
+    border: round gold;
+}
+
+#title {
+    row-span: 4;
+    text-align: center;
+    text-style: italic;
+    padding: 4 1;
+}
+
+#textbox {
+
+}
+
+#hive {
+    row-span: 3;
+}
+
+#wordlist {
+    column-span: 2;
+    row-span: 4;
+}
