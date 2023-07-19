@@ -10,9 +10,9 @@ Screen {
 
 #title {
     row-span: 4;
+    padding: 4 1;
     text-align: center;
     text-style: italic;
-    padding: 4 1;
 }
 
 #textbox {
@@ -21,6 +21,8 @@ Screen {
 
 #hive {
     row-span: 3;
+    padding: 3;
+    text-align: center;
 }
 
 #wordlist {

@@ -3,12 +3,10 @@
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Static
 
+from .hive import Hive
+
 
 class Title(Static):
-    DEFAULT_CLASSES = "box"
-
-
-class Hive(Static):
     DEFAULT_CLASSES = "box"
 
 
@@ -31,6 +29,11 @@ class SpellingBee(App):
         ("ctrl+r", "shuffle_hive", "Shuffle letters")
     ]
 
+    def __init__(self, center: str, letters: str):
+        super().__init__()
+        self._center = center
+        self._letters = letters
+
     def compose(self) -> ComposeResult:
         title ='''
 the
@@ -43,8 +46,8 @@ The Spelling Bee
         yield Title(title, id="title")
         yield Textbox(id="textbox")
         yield Wordlist(id="wordlist")
-        yield Hive(id="hive")
+        yield Hive(self._center, self._letters)
         yield Footer()
 
     def action_shuffle_hive(self):
-        pass
+        self.query_one("Hive").shuffle()

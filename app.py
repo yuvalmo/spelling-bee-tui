@@ -4,7 +4,7 @@ from ui.app import SpellingBee
 
 
 def main():
-    bee = SpellingBee()
+    bee = SpellingBee("m", "yuvali")
     bee.run()
 
 
