@@ -20,3 +20,6 @@ My own version of the *New York Time's Spelling Bee*.
     - Hive
     - Randomized hive
     - Relevant error when invalid
+* [ ] Add textual highlighter
+* [ ] Try to use 2fr instead of grid
+

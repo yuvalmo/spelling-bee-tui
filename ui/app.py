@@ -1,7 +1,8 @@
 #!/bin/env python3
 
+from textual import on
 from textual.app import App, ComposeResult
-from textual.widgets import Footer, Static
+from textual.widgets import Footer, Input, Static
 
 from .hive import Hive
 
@@ -10,14 +11,19 @@ class Title(Static):
     DEFAULT_CLASSES = "box"
 
 
-class Textbox(Static):
+class Textbox(Input):
     DEFAULT_CLASSES = "box"
-    pass
+    
+    def __init__(self):
+        super().__init__(id="textbox")
+        self.border_title = "Enter word:"
 
 
 class Wordlist(Static):
     DEFAULT_CLASSES = "box"
-    pass
+
+    def check(self, word: str):
+        self.update(word)
 
 
 class SpellingBee(App):
@@ -44,10 +50,14 @@ The Spelling Bee
 '''
 
         yield Title(title, id="title")
-        yield Textbox(id="textbox")
+        yield Textbox()
         yield Wordlist(id="wordlist")
         yield Hive(self._center, self._letters)
         yield Footer()
 
     def action_shuffle_hive(self):
         self.query_one("Hive").shuffle()
+
+    @on(Input.Submitted)
+    def check_word(self, event: Input.Submitted) -> None:
+        self.query_one("Wordlist").check(event.value)
