@@ -4,6 +4,8 @@ from textual import on
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Input, Static
 
+from src.checker import WordChecker
+
 from .hive import Hive
 
 
@@ -22,8 +24,13 @@ class Textbox(Input):
 class Wordlist(Static):
     DEFAULT_CLASSES = "box"
 
+    def __init__(self, center: str, letters: str):
+        super().__init__(id="wordlist")
+        self._c = WordChecker(center, letters)
+
     def check(self, word: str):
-        self.update(word)
+        if self._c.check(word):
+            self.update(word)
 
 
 class SpellingBee(App):
@@ -51,7 +58,7 @@ The Spelling Bee
 
         yield Title(title, id="title")
         yield Textbox()
-        yield Wordlist(id="wordlist")
+        yield Wordlist(self._center, self._letters)
         yield Hive(self._center, self._letters)
         yield Footer()
 
