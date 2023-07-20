@@ -2,6 +2,7 @@ import re
 import random
 
 from textual.widgets import Static
+from src.letters import Letters
 
 
 HEX = '''
@@ -16,9 +17,9 @@ HEX = '''
 class Hive(Static):
     DEFAULT_CLASSES = "box"
 
-    def __init__(self, center: str, letters: str):
-        self._center = center
-        self._letters = list(letters)
+    def __init__(self, letters: Letters):
+        self._central = letters.central
+        self._letters = list(letters.letters)
 
         super().__init__(self._hex(), id="hive")
 
@@ -27,7 +28,7 @@ class Hive(Static):
         self.update(self._hex())
 
     def _hex(self):
-        letters = list(self._center) + self._letters
+        letters = list(self._central) + self._letters
         hexagon = HEX
 
         for i, l in enumerate(letters):

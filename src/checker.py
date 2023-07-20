@@ -1,4 +1,6 @@
 from typing import Optional
+
+from .letters import Letters
 from .dictionary import IDictionary, Enchant
 
 
@@ -6,11 +8,10 @@ class WordChecker:
     ''' Checks if word is valid.
     '''
     def __init__(self,
-                 central: str,
-                 letters: str,
+                 letters: Letters,
                  d: Optional[IDictionary] = None) -> None:
-        self._central = central
-        self._letters = set(central + letters)
+        self._central = letters.central
+        self._letters = set(letters.all)
         self._d = d or Enchant()
 
     def check(self, word: str) -> bool:

@@ -5,6 +5,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Footer, Input, Static
 
 from src.checker import WordChecker
+from src.letters import Letters
 
 from .hive import Hive
 
@@ -24,9 +25,9 @@ class Textbox(Input):
 class Wordlist(Static):
     DEFAULT_CLASSES = "box"
 
-    def __init__(self, center: str, letters: str):
+    def __init__(self, letters: Letters):
         super().__init__(id="wordlist")
-        self._c = WordChecker(center, letters)
+        self._c = WordChecker(letters)
 
     def check(self, word: str):
         if self._c.check(word):
@@ -42,9 +43,8 @@ class SpellingBee(App):
         ("ctrl+r", "shuffle_hive", "Shuffle letters")
     ]
 
-    def __init__(self, center: str, letters: str):
+    def __init__(self, letters: Letters):
         super().__init__()
-        self._center = center
         self._letters = letters
 
     def compose(self) -> ComposeResult:
@@ -58,8 +58,8 @@ The Spelling Bee
 
         yield Title(title, id="title")
         yield Textbox()
-        yield Wordlist(self._center, self._letters)
-        yield Hive(self._center, self._letters)
+        yield Wordlist(self._letters)
+        yield Hive(self._letters)
         yield Footer()
 
     def action_shuffle_hive(self):
