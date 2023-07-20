@@ -1,6 +1,8 @@
 Screen {
     layout: grid;
-    grid-size: 4 6;
+    grid-size: 3 3;
+    grid-rows: 5 1fr 20%;
+    grid-columns: 1fr 30% 1fr;
 }
 
 .box {
@@ -9,7 +11,7 @@ Screen {
 }
 
 #title {
-    row-span: 4;
+    row-span: 2;
     padding: 4 1;
     text-align: center;
     text-style: italic;
@@ -20,13 +22,11 @@ Screen {
 }
 
 #hive {
-    row-span: 3;
-    padding: 3;
+    padding: 4;
     text-align: center;
 }
 
 #answers {
-    column-span: 2;
-    row-span: 4;
+    row-span: 2;
     padding: 1 2;
 }
