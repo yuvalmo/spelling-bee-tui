@@ -13,7 +13,7 @@ class Textbox(Input):
     
     def __init__(self):
         super().__init__(id="textbox")
-        self.border_title = "Enter word:"
+        self.border_title = "Enter Word"
 
 
 class SpellingBee(App):
@@ -45,9 +45,9 @@ The Spelling Bee
         yield Footer()
 
     def action_shuffle_hive(self):
-        self.query_one("Hive").shuffle()
+        self.query_one(Hive).shuffle()
 
     @on(Input.Submitted)
     def check_word(self, event: Input.Submitted) -> None:
         # TODO: Replace with event
-        self.query_one("Answers").check(event.value)
+        self.query_one(Answers).check(event.value)

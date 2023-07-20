@@ -8,11 +8,13 @@ from src.letters import Letters
 
 
 HEX = '''
-1   2
+1     2
 
-6   0   3
 
-5   4
+6     0     3
+
+
+5     4
 '''
 
 

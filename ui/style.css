@@ -1,4 +1,7 @@
+$color: gold;
+
 Screen {
+    background: $background;
     layout: grid;
     grid-size: 3 3;
     grid-rows: 5 1fr 20%;
@@ -7,22 +10,24 @@ Screen {
 
 .box {
     height: 100%;
-    border: round gold;
+    border: round $color;
 }
 
 #title {
     row-span: 2;
-    padding: 4 1;
+    padding: 4 4;
     text-align: center;
     text-style: italic;
 }
 
 #textbox {
-    padding: 1;
+    background: $background;
+    border-title-align: center;
+    padding: 1 4;
 }
 
 #hive {
-    padding: 4;
+    padding: 4 4;
     text-align: center;
 }
 
