@@ -2,6 +2,8 @@ import re
 import random
 
 from textual.widgets import Static
+from textual.reactive import reactive
+
 from src.letters import Letters
 
 
@@ -17,21 +19,23 @@ HEX = '''
 class Hive(Static):
     DEFAULT_CLASSES = "box"
 
-    def __init__(self, letters: Letters):
-        self._central = letters.central
-        self._letters = list(letters.letters)
+    letters = reactive(list(""))
 
-        super().__init__(self._hex(), id="hive")
+    def __init__(self, letters: Letters):
+        super().__init__(id="hive")
+
+        self.central = list(letters.central)
+        self.letters = list(letters.letters)
 
     def shuffle(self):
-        random.shuffle(self._letters)
-        self.update(self._hex())
+        ''' Rearrange letters (excluding central) in random order.
+        '''
+        self.letters = random.sample(self.letters, len(self.letters))
 
-    def _hex(self):
-        letters = list(self._central) + self._letters
-        hexagon = HEX
+    def render(self) -> str:
+        h = HEX
 
-        for i, l in enumerate(letters):
-            hexagon = re.sub(str(i), l, hexagon)
+        for i, l in enumerate(self.central + self.letters):
+            h = re.sub(str(i), l, h)
 
-        return hexagon
+        return h
