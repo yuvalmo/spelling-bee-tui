@@ -29,5 +29,8 @@ class Answers(Static):
     def render(self) -> RenderableType:
         self.border_title = f"{self.score} Points"
 
+        content = f"You've found {len(self.answers)} words.\n\n"
+        content += linesep.join(sorted(self.answers))
+
         # TODO: Show in columns
-        return linesep.join(sorted(self.answers))
+        return content
