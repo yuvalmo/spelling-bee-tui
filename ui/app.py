@@ -8,10 +8,6 @@ from .hive import Hive
 from .answers import Answers
 
 
-class Title(Static):
-    DEFAULT_CLASSES = "box"
-
-
 class Textbox(Input):
     DEFAULT_CLASSES = "box"
     
@@ -42,7 +38,7 @@ presents:
 The Spelling Bee
 '''
 
-        yield Title(title, id="title")
+        yield Static(title, id="title", classes="box")
         yield Textbox()
         yield Answers(self._letters)
         yield Hive(self._letters)

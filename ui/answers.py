@@ -1,4 +1,5 @@
 from os import linesep
+
 from rich.console import RenderableType
 from textual.reactive import reactive
 from textual.widgets import Static

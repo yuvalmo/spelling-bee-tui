@@ -8,4 +8,5 @@ My own version of the *New York Time's Spelling Bee*.
 * [ ] Display:
     - Pangrams in bold
     - Relevant error when invalid
+    - Show score in progress bar
 * [ ] Add textual highlighter
