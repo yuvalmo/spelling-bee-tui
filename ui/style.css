@@ -25,7 +25,8 @@ Screen {
     text-align: center;
 }
 
-#wordlist {
+#answers {
     column-span: 2;
     row-span: 4;
+    padding: 1 2;
 }
