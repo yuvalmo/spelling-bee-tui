@@ -4,8 +4,11 @@ My own version of the *New York Time's Spelling Bee*.
 # To Do
 
 ## UI
-* [ ] Display:
-    - Relevant error when invalid
+* [ ] Error message:
+    - Change layout and make room for message
+    - Show message and animate fade out
+* [ ] Score:
+    - Show added score and animate fade out
     - Show score in progress bar
 * [ ] Find way to define main color just once, and not in:
     - CSS
