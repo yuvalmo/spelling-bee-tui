@@ -6,13 +6,17 @@ from src.letters import Letters
 
 from .hive import Hive
 from .answers import Answers
+from .highlighter import BeeHighlighter
 
 
 class Textbox(Input):
     DEFAULT_CLASSES = "box"
     
-    def __init__(self):
-        super().__init__(id="textbox")
+    def __init__(self, letters: Letters):
+        super().__init__(
+            id="textbox",
+            highlighter=BeeHighlighter(letters)
+        )
         self.border_title = "Enter Word"
 
 
@@ -39,7 +43,7 @@ The Spelling Bee
 '''
 
         yield Static(title, id="title", classes="box")
-        yield Textbox()
+        yield Textbox(self._letters)
         yield Answers(self._letters)
         yield Hive(self._letters)
         yield Footer()
