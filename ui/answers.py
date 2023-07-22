@@ -1,8 +1,18 @@
 from os import linesep
+from dataclasses import dataclass
 
 from rich.console import RenderableType
+from rich.text import Text
+
 from textual.reactive import reactive
 from textual.widgets import Static
+
+
+@dataclass
+class Word:
+    value: str
+    score: int
+    pangram: bool
 
 
 class Answers(Static):
@@ -14,15 +24,22 @@ class Answers(Static):
     def __init__(self):
         super().__init__(id="answers")
 
-    def add(self, word: str, score: int):
-        self.score += score
+    def add(self, word: Word):
+        self.score += word.score
         self.answers.append(word)
 
     def render(self) -> RenderableType:
         self.border_title = f"{self.score} Points"
 
-        content = f"You've found {len(self.answers)} words.\n\n"
-        content += linesep.join(sorted(self.answers))
+        summary = Text(
+            f"You've found {len(self.answers)} words.\n\n"
+        )
+
+        words = [
+            Text(x.value,
+                 style="yellow" if x.pangram else "")
+            for x in self.answers
+        ]
 
         # TODO: Show in columns
-        return content
+        return summary + Text(linesep).join(words)

@@ -45,6 +45,10 @@ class Game:
         return 0
 
     @property
+    def checker(self) -> WordChecker:
+        return self._checker
+
+    @property
     def score(self) -> int:
         return self._score
 

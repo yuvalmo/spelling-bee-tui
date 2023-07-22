@@ -6,7 +6,7 @@ from src.letters import Letters
 from src.game import Game
 
 from .hive import Hive
-from .answers import Answers
+from .answers import Answers, Word
 from .highlighter import BeeHighlighter
 
 
@@ -59,9 +59,10 @@ The Spelling Bee
 
         try:
             self._game.try_word(word)
-            self.query_one(Answers).add(
-                word = word,
-                score = self._game.score_word(word)
-            )
+            self.query_one(Answers).add(Word(
+                value = word,
+                score = self._game.score_word(word),
+                pangram = self._game.checker.is_pangram(word)
+            ))
         except ValueError:
             pass  # TODO: Show error message
