@@ -3,6 +3,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Footer, Input, Static
 
 from src.letters import Letters
+from src.game import Game
 
 from .hive import Hive
 from .answers import Answers
@@ -32,9 +33,10 @@ class SpellingBee(App):
     def __init__(self, letters: Letters):
         super().__init__()
         self._letters = letters
+        self._game = Game(letters)
 
     def compose(self) -> ComposeResult:
-        title ='''
+        title = '''
 the
 New York Times
 presents:
@@ -44,7 +46,7 @@ The Spelling Bee
 
         yield Static(title, id="title", classes="box")
         yield Textbox(self._letters)
-        yield Answers(self._letters)
+        yield Answers()
         yield Hive(self._letters)
         yield Footer()
 
@@ -53,5 +55,13 @@ The Spelling Bee
 
     @on(Input.Submitted)
     def check_word(self, event: Input.Submitted) -> None:
-        # TODO: Replace with event
-        self.query_one(Answers).check(event.value)
+        word = event.value
+
+        try:
+            self._game.try_word(word)
+            self.query_one(Answers).add(
+                word = word,
+                score = self._game.score_word(word)
+            )
+        except ValueError:
+            pass  # TODO: Show error message
