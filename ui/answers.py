@@ -31,8 +31,13 @@ class Answers(Static):
     def render(self) -> RenderableType:
         self.border_title = f"{self.score} Points"
 
+        def count(s: str, l: list):
+            if len(l) != 1:
+                s += "s"
+            return f"{len(l)} {s}"
+
         summary = Text(
-            f"You've found {len(self.answers)} words.\n\n"
+            f"You have found {count('word', self.answers)}\n\n"
         )
 
         words = [
