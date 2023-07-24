@@ -26,7 +26,7 @@ class Game:
             raise ValueError("Invalid word")
 
         if word in self._answers:
-            raise ValueError("Word already accepted")
+            raise ValueError("Already accepted")
 
         self._score += self.score_word(word)
         self._answers.append(word)

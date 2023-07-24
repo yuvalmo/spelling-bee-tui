@@ -1,13 +1,14 @@
 from textual import on
 from textual.app import App, ComposeResult
-from textual.widgets import Footer, Input, Static
-from textual.containers import Container, Vertical
+from textual.widgets import Footer, Input
+from textual.containers import Center, Container, Vertical
 
 from src.letters import Letters
 from src.game import Game
 
 from .answers import Answers, Word
 from .widgets import textbox, title
+from .error import Error
 from .hive import Hive
 from .info import info
 
@@ -32,7 +33,8 @@ class SpellingBee(App):
             yield title()
             with Container(id="main-panel"):
                 yield textbox(self._letters)
-                yield Static(id="error-msg")
+                with Center():
+                    yield Error()
                 yield Hive(self._letters)
         yield Answers()
         yield Footer()
@@ -51,5 +53,5 @@ class SpellingBee(App):
                 score = self._game.score_word(word),
                 pangram = self._game.checker.is_pangram(word)
             ))
-        except ValueError:
-            pass  # TODO: Show error message
+        except ValueError as err:
+            self.query_one(Error).set(str(err))
