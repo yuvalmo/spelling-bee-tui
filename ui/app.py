@@ -1,25 +1,15 @@
 from textual import on
 from textual.app import App, ComposeResult
-from textual.widget import Widget
 from textual.widgets import Footer, Input, Static
-from textual.containers import Center, Container, Vertical
+from textual.containers import Container, Vertical
 
 from src.letters import Letters
 from src.game import Game
 
-from .hive import Hive
 from .answers import Answers, Word
-from .highlighter import BeeHighlighter
-
-
-def textbox(letters: Letters) -> Widget:
-    hl = BeeHighlighter(letters)
-
-    return Input(
-        id="textbox",
-        placeholder="Enter word...",
-        highlighter=hl
-    )
+from .widgets import textbox, title
+from .hive import Hive
+from .info import info
 
 
 class SpellingBee(App):
@@ -37,20 +27,11 @@ class SpellingBee(App):
         self._game = Game(letters)
 
     def compose(self) -> ComposeResult:
-        info = '''
-the
-New York Times
-presents:
-
-The Spelling Bee
-'''
-
-        yield Static(info, id="info", classes="panel")
+        yield info()
         with Vertical():
-            yield Static("Spelling Bee", id="title", classes="panel")
+            yield title()
             with Container(id="main-panel", classes="panel"):
-                with Center():
-                    yield textbox(self._letters)
+                yield textbox(self._letters)
                 yield Static(id="error-msg")
                 yield Hive(self._letters)
         yield Answers()

@@ -24,7 +24,7 @@ class Answers(Static):
     def __init__(self):
         super().__init__(id="answers")
 
-    def add(self, word: Word):
+    def add(self, word: Word) -> None:
         self.score += word.score
         self.answers.append(word)
 

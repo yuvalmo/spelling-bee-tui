@@ -40,9 +40,7 @@ Screen {
 }
 
 #info {
-    text-align: center;
-    text-style: italic;
-    content-align-vertical: middle;
+    padding: 1;
 }
 
 #answers {
