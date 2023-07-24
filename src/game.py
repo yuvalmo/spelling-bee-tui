@@ -21,12 +21,11 @@ class Game:
         If incorrect -> throws ValueError
         If correct   -> does not throw
         '''
-        # TODO: More informative error
-        if not self._checker.check(word):
-            raise ValueError("Invalid word")
+        # Will raise if word is invalid
+        self._checker.check(word)
 
         if word in self._answers:
-            raise ValueError("Already accepted")
+            raise ValueError("Already found")
 
         self._score += self.score_word(word)
         self._answers.append(word)

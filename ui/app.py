@@ -46,6 +46,9 @@ class SpellingBee(App):
     def check_word(self, event: Input.Submitted) -> None:
         word = event.value.lower()
 
+        if not word:
+            return
+
         try:
             self._game.try_word(word)
             self.query_one(Answers).add(Word(

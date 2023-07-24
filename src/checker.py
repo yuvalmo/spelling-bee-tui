@@ -16,19 +16,19 @@ class WordChecker:
 
     def check(self, word: str) -> bool:
         if len(word) < 4:
-            return False
+            raise ValueError("Too short")
 
         # Must contain central letter
         if self._central not in word:
-            return False
+            raise ValueError("Missing center letter")
 
         # Must contain only chosen letters
         if set(word) - self._letters:
-            return False
+            raise ValueError("Bad letters")
 
         # Check with word dictionary
         if not self._d.check(word):
-            return False
+            raise ValueError("Not in word list")
         
         return True
 
