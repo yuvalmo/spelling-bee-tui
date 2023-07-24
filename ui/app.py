@@ -3,6 +3,7 @@ from textual.app import App, ComposeResult
 from textual.widgets import Footer, Input
 from textual.containers import Center, Container, Vertical
 
+from src.errors import SpellingBeeError
 from src.letters import Letters
 from src.game import Game
 
@@ -56,5 +57,5 @@ class SpellingBee(App):
                 score = self._game.score_word(word),
                 pangram = self._game.checker.is_pangram(word)
             ))
-        except ValueError as err:
+        except SpellingBeeError as err:
             self.query_one(Error).set(str(err))

@@ -1,5 +1,6 @@
 from typing import Optional
 
+from .errors import BadLetters, MissingCenterLetter, NotInWordList, TooShort
 from .letters import Letters
 from .dictionary import IDictionary, Enchant
 
@@ -16,19 +17,19 @@ class WordChecker:
 
     def check(self, word: str) -> bool:
         if len(word) < 4:
-            raise ValueError("Too short")
+            raise TooShort()
 
         # Must contain central letter
         if self._central not in word:
-            raise ValueError("Missing center letter")
+            raise MissingCenterLetter()
 
         # Must contain only chosen letters
         if set(word) - self._letters:
-            raise ValueError("Bad letters")
+            raise BadLetters()
 
         # Check with word dictionary
         if not self._d.check(word):
-            raise ValueError("Not in word list")
+            raise NotInWordList()
         
         return True
 

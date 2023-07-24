@@ -1,5 +1,6 @@
 import pytest
 
+from src.errors import AlreadyFound, SpellingBeeError
 from src.game import Game
 from src.letters import Letters
 
@@ -74,7 +75,7 @@ def test_remembers_past_answers():
 def test_does_not_accept_wrong_word(word):
     g = game()
 
-    with pytest.raises(ValueError):
+    with pytest.raises(SpellingBeeError):
         g.try_word(word)
 
     assert g.score == 0
@@ -86,7 +87,7 @@ def test_does_not_accept_same_word_twice(word):
     g = game()
     g.try_word(word)
 
-    with pytest.raises(ValueError):
+    with pytest.raises(AlreadyFound):
         g.try_word(word)
 
     assert g.answers == [word]

@@ -1,8 +1,10 @@
-from typing import Iterable
 import pytest
+
+from typing import Iterable, Type
 
 from src.checker import WordChecker
 from src.dictionary import NullDict
+from src.errors import BadLetters, MissingCenterLetter, TooShort
 from src.letters import Letters
 
 
@@ -12,20 +14,21 @@ def checker():
 
 def expect_raise_list(
     checker: WordChecker,
+    error: Type,
     words: Iterable[str]
 ) -> None:
     ''' Expect each word to raise an exception when checked
     by the given checker.
     '''
     for word in words:
-        with pytest.raises(ValueError):
+        with pytest.raises(error):
             checker.check(word)
 
 
 def test_has_enough_letters():
     wc = checker()
 
-    expect_raise_list(wc, (
+    expect_raise_list(wc, TooShort, (
         "a",
         "ab",
         "abc",
@@ -38,7 +41,7 @@ def test_has_enough_letters():
 def test_contains_central_letter():
     wc = checker()
 
-    expect_raise_list(wc, (
+    expect_raise_list(wc, MissingCenterLetter, (
         "bcde",
         "cbde",
     ))
@@ -53,7 +56,7 @@ def test_contains_central_letter():
 def test_contains_only_valid_letters():
     wc = checker()
 
-    expect_raise_list(wc, (
+    expect_raise_list(wc, BadLetters, (
         "abcdek",
         "afcbdm",
     ))
@@ -64,7 +67,7 @@ def test_contains_only_valid_letters():
 def test_cannot_contain_whitespace():
     wc = checker()
 
-    expect_raise_list(wc, (
+    expect_raise_list(wc, BadLetters, (
         "a bcde",
         "ab cde",
         "abc de",

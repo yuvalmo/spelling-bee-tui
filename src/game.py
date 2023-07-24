@@ -1,5 +1,6 @@
 from typing import List
 
+from .errors import AlreadyFound
 from .letters import Letters
 from .checker import WordChecker
 
@@ -25,7 +26,7 @@ class Game:
         self._checker.check(word)
 
         if word in self._answers:
-            raise ValueError("Already found")
+            raise AlreadyFound()
 
         self._score += self.score_word(word)
         self._answers.append(word)
