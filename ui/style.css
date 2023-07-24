@@ -3,35 +3,48 @@ $color: gold;
 Screen {
     background: $background;
     layout: grid;
-    grid-size: 3 3;
-    grid-rows: 5 1fr 20%;
+    grid-size: 3; /* columns */
     grid-columns: 1fr 30% 1fr;
 }
 
-.box {
+.panel {
     height: 100%;
     border: round $color;
 }
 
 #title {
-    row-span: 2;
-    padding: 4 4;
-    text-align: center;
-    text-style: italic;
+    height: 5;
+    content-align: center middle;
+}
+
+#main-panel {
+    height: 1fr;
 }
 
 #textbox {
+    height: 3;
+    width: 18;
+    border: none;
     background: $background;
-    border-title-align: center;
-    padding: 1 4;
+    padding: 1 2;
+}
+
+#error-msg {
+    height: 3;
+    background: $background;
 }
 
 #hive {
-    padding: 4 4;
+    height: 1fr;
+    content-align: center middle;
+}
+
+#info {
     text-align: center;
+    text-style: italic;
+    content-align-vertical: middle;
 }
 
 #answers {
-    row-span: 2;
     padding: 1 2;
 }

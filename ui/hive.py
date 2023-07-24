@@ -13,19 +13,17 @@ from .highlighter import BeeHighlighter
 
 
 HEX = '''
-1     2
+   1     2
 
 
 6     0     3
 
 
-5     4
+   5     4
 '''
 
 
 class Hive(Static):
-    DEFAULT_CLASSES = "box"
-
     letters = reactive(list(""))
 
     def __init__(self, letters: Letters):

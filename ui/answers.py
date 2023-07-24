@@ -16,7 +16,7 @@ class Word:
 
 
 class Answers(Static):
-    DEFAULT_CLASSES = "box"
+    DEFAULT_CLASSES = "panel"
 
     score = reactive(0)
     answers = reactive(list())
