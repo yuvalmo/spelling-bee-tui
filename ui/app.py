@@ -30,7 +30,7 @@ class SpellingBee(App):
         yield info()
         with Vertical():
             yield title()
-            with Container(id="main-panel", classes="panel"):
+            with Container(id="main-panel"):
                 yield textbox(self._letters)
                 yield Static(id="error-msg")
                 yield Hive(self._letters)

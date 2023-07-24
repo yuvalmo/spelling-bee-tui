@@ -36,6 +36,11 @@ Screen {
 
 #hive {
     height: 1fr;
+    content-align: center top;
+}
+
+#copyright {
+    height: 7;
     content-align: center middle;
 }
 
