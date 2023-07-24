@@ -39,11 +39,6 @@ Screen {
     content-align: center top;
 }
 
-#copyright {
-    height: 7;
-    content-align: center middle;
-}
-
 #info {
     padding: 1;
 }

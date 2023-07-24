@@ -42,7 +42,7 @@ class SpellingBee(App):
 
     @on(Input.Submitted)
     def check_word(self, event: Input.Submitted) -> None:
-        word = event.value
+        word = event.value.lower()
 
         try:
             self._game.try_word(word)

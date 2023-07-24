@@ -2,8 +2,6 @@
 their own file.
 '''
 
-from rich.text import Text
-
 from textual.containers import Center
 from textual.widget import Widget
 from textual.widgets import Input, Static

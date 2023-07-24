@@ -46,7 +46,7 @@ class Hive(Static):
         for i, l in enumerate(self.central + self.letters):
             h = re.sub(str(i), l, h)
 
-        text = Text(h)
+        text = Text(h.upper())
         self.highlighter.highlight(text)
 
         return text

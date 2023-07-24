@@ -41,7 +41,7 @@ class Answers(Static):
         )
 
         words = [
-            Text(x.value,
+            Text(x.value.capitalize(),
                  style="yellow" if x.pangram else "")
             for x in sorted(self.answers, key=lambda x: x.value)
         ]

@@ -14,7 +14,7 @@ class BeeHighlighter(Highlighter):
 
     @override
     def highlight(self, text: Text) -> None:
-        for i, c in enumerate(str(text)):
+        for i, c in enumerate(str(text).lower()):
             if c in self.letters.central:
                 style = "yellow"
             elif c in self.letters.letters:
