@@ -1,8 +1,8 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from src.save import History
 from src.game import Game
+from src.history import History
 from src.letters import Letters
 
 

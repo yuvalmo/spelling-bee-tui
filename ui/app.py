@@ -3,9 +3,9 @@ from textual.widgets import Footer, Input
 from textual.containers import Center, Container, Vertical
 
 from src.errors import SpellingBeeError
-from src.letters import Letters
 from src.game import Game
-from src.save import History
+from src.history import History
+from src.letters import Letters
 
 from .answers import Answers, Word
 from .widgets import textbox, title

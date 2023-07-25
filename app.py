@@ -3,7 +3,7 @@
 from functools import partial
 from argparse import ArgumentParser, ArgumentTypeError
 
-from src.save import History
+from src.history import History
 from src.letters import Letters
 
 from ui.app import SpellingBee
