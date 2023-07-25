@@ -1,10 +1,3 @@
-''' A module to take care of save management.
-
-Its API includes:
-- Save a game to fs.
-- Load a game from fs.
-- Reset a save.
-'''
 import json
 
 from pathlib import Path
@@ -14,42 +7,42 @@ from .game import Game
 from .letters import Letters
 
 
-DEFAULT_PATH = Path.home() / ".sbee"
+class History:
+    ''' This class manages past games and saves.
+    '''
+    DEFAULT_PATH = Path.home() / ".sbee"
 
+    def __init__(self,
+                 path: Path = DEFAULT_PATH) -> None:
+        self.path = path
+        
+    def save(self, game: Game) -> None:
+        path = self.getpath(game.letters)
+        path.parent.mkdir(parents=True, exist_ok=True)
 
-def save(game: Game, path: Path = DEFAULT_PATH) -> None:
-    path = savepath(game.letters, path)
-    path.parent.mkdir(parents=True, exist_ok=True)
+        with path.open("w") as file:
+            json.dump(game.answers, file, indent=2)
 
-    with path.open("w") as file:
-        json.dump(game.answers, file, indent=2)
+    def load(self, letters: Letters,) -> List[str]:
+        path = self.getpath(letters)
 
+        if not path.exists():
+            return []
 
-def load(letters: Letters,
-         path: Path = DEFAULT_PATH) -> List[str]:
-    path = savepath(letters, path)
+        with open(path) as file:
+            answers = json.load(file)
 
-    if not path.exists():
-        return []
+        return answers
 
-    with open(path) as file:
-        answers = json.load(file)
+    def reset(self, letters: Letters) -> None:
+        path = self.getpath(letters)
+        path.unlink(missing_ok=True)
 
-    return answers
+    def getpath(self, letters: Letters) -> Path:
+        return self.path / self.filename(letters)
 
-
-def reset(letters: Letters,
-          path: Path = DEFAULT_PATH) -> None:
-    path = savepath(letters, path)
-    path.unlink(missing_ok=True)
-
-
-def filename(letters: Letters) -> str:
-    center = letters.central
-    others = letters.letters
-    return center + ''.join(sorted(others))
-
-
-def savepath(letters: Letters,
-             path: Path = DEFAULT_PATH) -> Path:
-    return path / filename(letters)
+    @staticmethod
+    def filename(letters: Letters) -> str:
+        center = letters.central
+        others = letters.letters
+        return center + ''.join(sorted(others))

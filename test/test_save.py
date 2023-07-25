@@ -1,27 +1,29 @@
 from pathlib import Path
 from tempfile import TemporaryDirectory
 
-from src import save
+from src.save import History
 from src.game import Game
 from src.letters import Letters
 
 
 def test_filename():
     l = Letters("a", "bcdefg")
-    assert "abcdefg" == save.filename(l)
+    assert "abcdefg" == History.filename(l)
 
     l = Letters("a", "cefgbd")
-    assert "abcdefg" == save.filename(l)
+    assert "abcdefg" == History.filename(l)
 
     l = Letters("y", "temnia")
-    assert "yaeimnt" == save.filename(l)
+    assert "yaeimnt" == History.filename(l)
 
 
 def test_load_not_found():
     l = Letters("y", "temnia")
 
     with TemporaryDirectory() as td:
-        assert not save.load(l, Path(td))
+        path = Path(td)
+        hist = History(path)
+        assert not hist.load(l)
 
 
 def test_save_first_time():
@@ -35,13 +37,14 @@ def test_save_first_time():
 
     with TemporaryDirectory() as td:
         path = Path(td)
+        hist = History(path)
 
         # Save game
-        save.save(game, path)
+        hist.save(game)
         assert (path / "yaeimnt").exists()
 
         # Load it
-        loaded = save.load(l, path)
+        loaded = hist.load(l)
 
     assert loaded
 
@@ -62,20 +65,21 @@ def test_save_overwrite():
 
     with TemporaryDirectory() as td:
         path = Path(td)
+        hist = History(path)
 
         # Save game
-        save.save(game, path)
+        hist.save(game)
         assert (path / "yaeimnt").exists()
 
         game.try_word("entity")
         game.try_word("amenity")
 
         # Save game again
-        save.save(game, path)
+        hist.save(game)
         assert (path / "yaeimnt").exists()
 
         # Load it
-        loaded = save.load(l, path)
+        loaded = hist.load(l)
 
     assert loaded
 
@@ -96,12 +100,15 @@ def test_reset():
 
     with TemporaryDirectory() as td:
         path = Path(td)
-        save.save(game, path)
+        hist = History(path)
 
-        # Reset this save
-        save.reset(l, path)
+        # Save once
+        hist.save(game)
+
+        # Delete save
+        hist.reset(l)
 
         # Try to load
-        loaded = save.load(l, path)
+        loaded = hist.load(l)
 
     assert not loaded

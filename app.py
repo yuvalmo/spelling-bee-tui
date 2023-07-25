@@ -3,8 +3,9 @@
 from functools import partial
 from argparse import ArgumentParser, ArgumentTypeError
 
-from src import save
+from src.save import History
 from src.letters import Letters
+
 from ui.app import SpellingBee
 
 
@@ -45,7 +46,7 @@ def main():
     )
 
     if args.new_game:
-        save.reset(letters)
+        History().reset(letters)
 
     bee = SpellingBee(letters)
     bee.run()

@@ -5,7 +5,7 @@ from textual.containers import Center, Container, Vertical
 from src.errors import SpellingBeeError
 from src.letters import Letters
 from src.game import Game
-from src.save import load, save
+from src.save import History
 
 from .answers import Answers, Word
 from .widgets import textbox, title
@@ -41,7 +41,7 @@ class SpellingBee(App):
         yield Footer()
 
     def on_mount(self) -> None:
-        answers = load(self._letters)
+        answers = History().load(self._letters)
         if not answers:
             return
         for word in answers:
@@ -49,7 +49,7 @@ class SpellingBee(App):
 
     def on_exit_app(self) -> None:
         if self._game.answers:
-            save(self._game)
+            History().save(self._game)
 
     def action_shuffle_hive(self):
         self.query_one(Hive).shuffle()
