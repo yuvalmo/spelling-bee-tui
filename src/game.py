@@ -12,6 +12,7 @@ class Game:
 
     def __init__(self, letters: Letters) -> None:
         self._checker = WordChecker(letters)
+        self._letters = letters
 
         self._score = 0
         self._answers = list()
@@ -43,6 +44,10 @@ class Game:
             return l
 
         return 0
+
+    @property
+    def letters(self) -> Letters:
+        return self._letters
 
     @property
     def checker(self) -> WordChecker:
