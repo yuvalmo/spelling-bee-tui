@@ -1,11 +1,10 @@
 from textual.app import App, ComposeResult
+from textual.binding import Binding
 from textual.widgets import Footer, Input
 from textual.containers import Center, Container, Vertical
 
 from src.errors import SpellingBeeError
 from src.game import Game
-from src.history import History
-from src.letters import Letters
 
 from .answers import Answers, Word
 from .widgets import textbox, title
@@ -14,19 +13,20 @@ from .hive import Hive
 from .info import info
 
 
-class SpellingBee(App):
+class SpellingBee(App[Game]):
     ''' Spelling Bee app.
     '''
     CSS_PATH = "style.css"
 
     BINDINGS = [
-        ("ctrl+r", "shuffle_hive", "Shuffle letters")
+        Binding("ctrl+r", "shuffle_hive", "Shuffle letters"),
+        Binding("ctrl+c", "quit", "Quit", priority=True)
     ]
 
-    def __init__(self, letters: Letters):
+    def __init__(self, game: Game):
         super().__init__()
-        self._letters = letters
-        self._game = Game(letters)
+        self._letters = game.letters
+        self._game = game
 
     def compose(self) -> ComposeResult:
         yield info()
@@ -41,31 +41,39 @@ class SpellingBee(App):
         yield Footer()
 
     def on_mount(self) -> None:
-        answers = History().load(self._letters)
-        if not answers:
+        if not self._game.answers:
             return
-        for word in answers:
-            self.check_word(word)
 
-    def on_exit_app(self) -> None:
-        if self._game.answers:
-            History().save(self._game)
+        # If this is a continued game, populate answers
+        #   from history.
+        for word in self._game.answers:
+            self.populate_answers(word)
+
+    def action_quit(self) -> None:
+        self.exit(self._game)
 
     def action_shuffle_hive(self):
         self.query_one(Hive).shuffle()
 
     def on_input_submitted(self, event: Input.Submitted) -> None:
-        if not event.value:
-            return
-        self.check_word(event.value.lower())
+        word = event.value
 
-    def check_word(self, word: str) -> None:
+        # No point in checking an empty word
+        if not word:
+            return
+
         try:
             self._game.try_word(word)
-            self.query_one(Answers).add(Word(
-                value = word,
-                score = self._game.score_word(word),
-                pangram = self._game.checker.is_pangram(word)
-            ))
+            self.populate_answers(word)
         except SpellingBeeError as err:
-            self.query_one(Error).set(str(err))
+            self.populate_error(str(err))
+
+    def populate_answers(self, word: str) -> None:
+        self.query_one(Answers).add(Word(
+            value = word,
+            score = self._game.score_word(word),
+            pangram = self._game.checker.is_pangram(word)
+        ))
+
+    def populate_error(self, msg: str) -> None:
+        self.query_one(Error).set(msg)

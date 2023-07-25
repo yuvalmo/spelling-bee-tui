@@ -3,6 +3,7 @@
 from functools import partial
 from argparse import ArgumentParser, ArgumentTypeError
 
+from src.game import Game
 from src.history import History
 from src.letters import Letters
 
@@ -45,11 +46,20 @@ def main():
         args.letters[1:]
     )
 
-    if args.new_game:
-        History().reset(letters)
+    history = History()
 
-    bee = SpellingBee(letters)
-    bee.run()
+    if args.new_game:
+        history.reset(letters)
+
+    # Load game from history
+    game = history.load(letters) or Game(letters)
+
+    # Launch app
+    game = SpellingBee(game).run()
+
+    # Save game to history
+    if game and game.score:
+        history.save(game)
 
 
 if __name__ == "__main__":

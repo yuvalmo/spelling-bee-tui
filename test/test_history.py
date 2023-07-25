@@ -47,13 +47,8 @@ def test_save_first_time():
         loaded = hist.load(l)
 
     assert loaded
-
-    loaded_game = Game(l)
-    for w in loaded:
-        loaded_game.try_word(w)
-
-    assert game.score == loaded_game.score
-    assert game.answers == loaded_game.answers
+    assert loaded.score == game.score
+    assert loaded.answers == game.answers
 
 
 def test_save_overwrite():
@@ -82,13 +77,8 @@ def test_save_overwrite():
         loaded = hist.load(l)
 
     assert loaded
-
-    loaded_game = Game(l)
-    for w in loaded:
-        loaded_game.try_word(w)
-
-    assert game.score == loaded_game.score
-    assert game.answers == loaded_game.answers
+    assert loaded.score == game.score
+    assert loaded.answers == game.answers
 
 
 def test_reset():

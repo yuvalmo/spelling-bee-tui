@@ -1,7 +1,7 @@
 import json
 
 from pathlib import Path
-from typing import List
+from typing import Optional
 
 from .game import Game
 from .letters import Letters
@@ -23,16 +23,20 @@ class History:
         with path.open("w") as file:
             json.dump(game.answers, file, indent=2)
 
-    def load(self, letters: Letters,) -> List[str]:
+    def load(self, letters: Letters) -> Optional[Game]:
         path = self.getpath(letters)
 
         if not path.exists():
-            return []
+            return None
 
         with open(path) as file:
             answers = json.load(file)
 
-        return answers
+        game = Game(letters)
+        for word in answers:
+            game.try_word(word)
+
+        return game
 
     def reset(self, letters: Letters) -> None:
         path = self.getpath(letters)
