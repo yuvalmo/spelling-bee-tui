@@ -85,3 +85,23 @@ def test_save_overwrite():
 
     assert game.score == loaded_game.score
     assert game.answers == loaded_game.answers
+
+
+def test_reset():
+    l = Letters("y", "temnia")
+
+    game = Game(l)
+    game.try_word("tiny")
+    game.try_word("teeny")
+
+    with TemporaryDirectory() as td:
+        path = Path(td)
+        save.save(game, path)
+
+        # Reset this save
+        save.reset(l, path)
+
+        # Try to load
+        loaded = save.load(l, path)
+
+    assert not loaded

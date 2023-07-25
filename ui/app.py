@@ -44,12 +44,12 @@ class SpellingBee(App):
         answers = load(self._letters)
         if not answers:
             return
-
         for word in answers:
             self.check_word(word)
 
     def on_exit_app(self) -> None:
-        save(self._game)
+        if self._game.answers:
+            save(self._game)
 
     def action_shuffle_hive(self):
         self.query_one(Hive).shuffle()

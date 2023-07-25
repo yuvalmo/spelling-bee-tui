@@ -9,7 +9,7 @@ test:
 	pytest test $(ARGS)
 
 app:
-	textual run app.py
+	textual run app.py $(ARGS)
 
 clean:
 	git clean -xfd
