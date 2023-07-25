@@ -1,4 +1,3 @@
-from textual import on
 from textual.app import App, ComposeResult
 from textual.widgets import Footer, Input
 from textual.containers import Center, Container, Vertical
@@ -6,6 +5,7 @@ from textual.containers import Center, Container, Vertical
 from src.errors import SpellingBeeError
 from src.letters import Letters
 from src.game import Game
+from src.save import load, save
 
 from .answers import Answers, Word
 from .widgets import textbox, title
@@ -40,16 +40,26 @@ class SpellingBee(App):
         yield Answers()
         yield Footer()
 
+    def on_mount(self) -> None:
+        answers = load(self._letters)
+        if not answers:
+            return
+
+        for word in answers:
+            self.check_word(word)
+
+    def on_exit_app(self) -> None:
+        save(self._game)
+
     def action_shuffle_hive(self):
         self.query_one(Hive).shuffle()
 
-    @on(Input.Submitted)
-    def check_word(self, event: Input.Submitted) -> None:
-        word = event.value.lower()
-
-        if not word:
+    def on_input_submitted(self, event: Input.Submitted) -> None:
+        if not event.value:
             return
+        self.check_word(event.value.lower())
 
+    def check_word(self, word: str) -> None:
         try:
             self._game.try_word(word)
             self.query_one(Answers).add(Word(

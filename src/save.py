@@ -1,7 +1,7 @@
 import json
 
 from pathlib import Path
-from typing import Optional
+from typing import List
 
 from .game import Game
 from .letters import Letters
@@ -19,21 +19,16 @@ def save(game: Game, path: Path = DEFAULT_PATH) -> None:
 
 
 def load(letters: Letters,
-         path: Path = DEFAULT_PATH) -> Optional[Game]:
+         path: Path = DEFAULT_PATH) -> List[str]:
     path = path / filename(letters)
 
     if not path.exists():
-        return None
+        return []
 
     with open(path) as file:
         answers = json.load(file)
 
-    game = Game(letters)
-
-    for word in answers:
-        game.try_word(word)
-
-    return game
+    return answers
 
 
 def filename(letters: Letters) -> str:

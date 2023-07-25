@@ -44,8 +44,13 @@ def test_save_first_time():
         loaded = save.load(l, path)
 
     assert loaded
-    assert game.score == loaded.score
-    assert game.answers == loaded.answers
+
+    loaded_game = Game(l)
+    for w in loaded:
+        loaded_game.try_word(w)
+
+    assert game.score == loaded_game.score
+    assert game.answers == loaded_game.answers
 
 
 def test_save_overwrite():
@@ -73,5 +78,10 @@ def test_save_overwrite():
         loaded = save.load(l, path)
 
     assert loaded
-    assert game.score == loaded.score
-    assert game.answers == loaded.answers
+
+    loaded_game = Game(l)
+    for w in loaded:
+        loaded_game.try_word(w)
+
+    assert game.score == loaded_game.score
+    assert game.answers == loaded_game.answers
