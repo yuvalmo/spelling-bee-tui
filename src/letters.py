@@ -42,3 +42,13 @@ class Letters:
     def __str__(self) -> str:
         return self.central.upper() + \
                ''.join(sorted(self.letters))
+
+    def __eq__(self, o: object) -> bool:
+        if not isinstance(o, Letters):
+            return False
+
+        ours = ''.join(sorted(self.letters))
+        them = ''.join(sorted(o.letters))
+
+        return self.central == o.central and \
+               ours == them
