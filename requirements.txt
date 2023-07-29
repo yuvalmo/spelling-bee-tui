@@ -1,4 +1,4 @@
-pyenchant
-pytest
-textual
-textual-dev
+pyenchant   >= 3.*
+pytest      >= 7.*
+textual     >= 0.*
+textual-dev >= 1.*
