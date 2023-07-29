@@ -1,7 +1,4 @@
 pyenchant
 pytest
-tempfile
-termcolor
 textual
 textual-dev
-# add rich?
