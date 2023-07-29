@@ -22,7 +22,7 @@ class Letters:
             raise ValueError("Cannot have more than one central letter")
 
         if len(letters) != Letters.LEN:
-            raise ValueError("Must have only {Letters.LEN} letters")
+            raise ValueError(f"Must have only {Letters.LEN} letters")
 
         if not letters.isalpha() or not central.isalpha():
             raise ValueError("Must contain only letters")
@@ -32,3 +32,13 @@ class Letters:
 
         if central in letters:
             raise ValueError("Each letter must be unique")
+
+    @staticmethod
+    def fromstr(s: str):
+        c = s[:1]
+        o = s[1:]
+        return Letters(c, o)
+
+    def __str__(self) -> str:
+        return self.central.upper() + \
+               ''.join(sorted(self.letters))

@@ -1,7 +1,7 @@
 import json
 
 from pathlib import Path
-from typing import Optional
+from typing import List, Optional
 
 from .game import Game
 from .letters import Letters
@@ -16,6 +16,12 @@ class History:
                  path: Path = DEFAULT_PATH) -> None:
         self.path = path
         
+    def list(self) -> List[Letters]:
+        return list(
+            Letters.fromstr(file.name)
+            for file in self.path.iterdir()
+        )
+
     def save(self, game: Game) -> None:
         path = self.getpath(game.letters)
         path.parent.mkdir(parents=True, exist_ok=True)
