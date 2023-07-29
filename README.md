@@ -2,12 +2,22 @@
 My own version of the *New York Time's Spelling Bee*.
 
 # To Do
+- [ ] Add option to filter given answers.
 
-## UI
-* [ ] Score:
-    - Show added score and animate fade out
-    - Show score in progress bar
-* [ ] Find way to define main color just once, and not in:
-    - CSS
-    - Highlighter
-    - Answers
+# How to Play
+Simply enter the following command:
+```bash
+./app.py play codtiem
+```
+* The first letter must be the central one.
+* Your past answers will be saved automatically.
+
+To reset the game and delete all past answers enter:
+```bash
+./app.py play codtiem --new-game
+```
+
+To show past saves and their score:
+```bash
+./app.py list
+```
