@@ -6,7 +6,7 @@ from textual.containers import Center, Container, Vertical
 from src.errors import SpellingBeeError
 from src.game import Game
 
-from .answers import Answers, Word
+from .answers import Answers, AnswerSearch, Word
 from .widgets import textbox, title
 from .error import Error
 from .hive import Hive
@@ -37,7 +37,9 @@ class SpellingBee(App[Game]):
                 with Center():
                     yield Error()
                 yield Hive(self._letters)
-        yield Answers()
+        with Vertical(id="answer-panel", classes="panel"):
+            yield Answers()
+            yield AnswerSearch()
         yield Footer()
 
     def on_mount(self) -> None:

@@ -13,6 +13,16 @@ Screen {
     border: round $color;
 }
 
+Input {
+    height: 1;
+    border: round grey;
+    background: $background;
+}
+
+Input:focus {
+    border: round white;
+}
+
 #title {
     height: 5;
     content-align: center middle;
@@ -23,11 +33,7 @@ Screen {
 }
 
 #textbox {
-    height: 3;
-    width: 18;
-    border: none;
-    background: $background;
-    padding: 1 2;
+    width: 20;
 }
 
 #error-msg {
@@ -48,4 +54,9 @@ Screen {
 
 #answers {
     padding: 1 2;
+}
+
+#answer-search {
+    margin: 0 1;
+    dock: bottom;
 }
