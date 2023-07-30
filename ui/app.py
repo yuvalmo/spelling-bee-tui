@@ -1,3 +1,4 @@
+from textual import on
 from textual.app import App, ComposeResult
 from textual.binding import Binding
 from textual.widgets import Footer, Input
@@ -57,6 +58,7 @@ class SpellingBee(App[Game]):
     def action_shuffle_hive(self):
         self.query_one(Hive).shuffle()
 
+    @on(Input.Submitted, selector="#textbox")
     def on_input_submitted(self, event: Input.Submitted) -> None:
         word = event.value
 
