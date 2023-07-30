@@ -15,7 +15,7 @@ Screen {
 
 Input {
     height: 1;
-    border: round grey;
+    border: round #555;
     background: $background;
 }
 
@@ -50,6 +50,10 @@ Input:focus {
 
 #info {
     padding: 1;
+}
+
+#answer-panel {
+    border-title-align: right;
 }
 
 #answers {

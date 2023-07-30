@@ -6,6 +6,7 @@ from rich.text import Text
 
 from textual.events import Blur, Focus
 from textual.reactive import reactive
+from textual.widget import Widget
 from textual.widgets import Input, Static
 
 
@@ -22,41 +23,64 @@ class Answers(Static):
     '''
 
     score = reactive(0)
-    answers = reactive(list())
+    answers = reactive(list(), layout=True)
 
     # A pattern to filter answers with
-    search = reactive("")
+    search = reactive("", layout=True)
 
     def __init__(self):
         super().__init__(id="answers")
 
     def add(self, word: Word) -> None:
+        # NOTE: We have to append the word this way
+        #   to trigger the reactive attribute.
+        #   Calling `append` does not trigger it.
+        self.answers = self.answers + [word]
         self.score += word.score
-        self.answers.append(word)
 
     def render(self) -> RenderableType:
-        # TODO: Fix this. currently does nothing.
-        # self.border_title = f"{self.score} Points"
+        # TODO: Fix this. This is weird
+        if isinstance(self.parent, Widget):
+            panel: Widget = self.parent
+            panel.border_title = f"{self.score} Points"
 
-        def count(s: str, l: list):
-            if len(l) != 1:
-                s += "s"
-            return f"{len(l)} {s}"
+        def _starts_with_search(w: Word) -> bool:
+            if not self.search:
+                return True
+            return w.value.startswith(self.search)
 
-        summary = Text(
-            f"You have found {count('word', self.answers)}\n\n"
+        def _make_text(w: Word) -> Text:
+            return Text(
+                w.value.capitalize(),
+                style = "yellow" if w.pangram else ""
+            )
+
+        # List of correct answers
+        words = list(
+            map(
+                _make_text,
+                filter(
+                    _starts_with_search,
+                    sorted(
+                        self.answers,
+                        key = lambda x: x.value
+                    )
+                )
+            )
         )
 
-        # TODO: Make this prettier.
-        words = [
-            Text(x.value.capitalize(),
-                 style="yellow" if x.pangram else "")
-            for x in sorted(self.answers, key=lambda x: x.value)
-            if x.value.startswith(self.search)
-        ]
+        n_searched = len(words)
+        n_total = len(self.answers)
 
-        # TODO: Show in columns
-        return summary + Text(linesep).join(words)
+        # Count of correct answers
+        count = Text(str(n_searched)) \
+              + Text.styled("/", "grey30") \
+              + Text(str(n_total))
+        count.align("right", self.size.width)
+
+        return Text(linesep).join(
+            [count] + words
+        )
 
 
 class AnswerSearch(Input):
@@ -68,7 +92,7 @@ class AnswerSearch(Input):
         self.on_blur(Blur())
 
     def on_blur(self, _: Blur) -> None:
-        self.placeholder = "To search hit <Tab>"
+        self.placeholder = "To search hit <TAB>"
 
     def on_focus(self, _: Focus) -> None:
         self.placeholder = "To search just type"
