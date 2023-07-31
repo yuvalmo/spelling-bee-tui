@@ -4,9 +4,10 @@ from dataclasses import dataclass
 from rich.console import RenderableType
 from rich.text import Text
 
+from textual.app import ComposeResult
+from textual.containers import Vertical
 from textual.events import Blur, Focus
 from textual.reactive import reactive
-from textual.widget import Widget
 from textual.widgets import Input, Static
 
 
@@ -17,50 +18,70 @@ class Word:
     pangram: bool
 
 
-class Answers(Static):
+class Answers(Vertical):
     ''' Show a summary of the correct answers given by the
     player, the score, etc.
     '''
-
+    # The score accumulated so far
     score = reactive(0)
+
+    def __init__(self):
+        super().__init__(classes="panel")
+
+    def compose(self) -> ComposeResult:
+        yield AnswerList()
+        yield AnswerSearch()
+
+    def add(self, word: Word) -> None:
+        self.score += word.score
+        self.border_title = f"{self.score} Points"
+
+        # NOTE: We have to append the word this way
+        #   to trigger the reactive attribute.
+        #   Calling `append` does not trigger it.
+        lst = self.query_one(AnswerList)
+        lst.answers = lst.answers + [word]
+
+    def on_input_changed(self, event: Input.Changed) -> None:
+        lst = self.query_one(AnswerList)
+        lst.search = event.value.lower()
+
+
+class AnswerList(Static):
+    ''' A searchable list of the given answers so far.
+    '''
+    # A list containing the correct answers
     answers = reactive(list(), layout=True)
 
     # A pattern to filter answers with
     search = reactive("", layout=True)
 
-    def __init__(self):
-        super().__init__(id="answers")
+    @staticmethod
+    def _make_text(w: Word) -> Text:
+        return Text(
+            w.value.capitalize(),
+            style = "yellow" if w.pangram else ""
+        )
 
-    def add(self, word: Word) -> None:
-        # NOTE: We have to append the word this way
-        #   to trigger the reactive attribute.
-        #   Calling `append` does not trigger it.
-        self.answers = self.answers + [word]
-        self.score += word.score
+    def _make_count(self, num: int, total: int) -> Text:
+        count = Text(str(num)) \
+              + Text.styled("/", "grey30") \
+              + Text(str(total))
+        count.align("right", self.size.width)
+        return count
+
+    def _starts_with_search(self, w: Word) -> bool:
+        if not self.search:
+            return True
+        return w.value.startswith(self.search)
 
     def render(self) -> RenderableType:
-        # TODO: Fix this. This is weird
-        if isinstance(self.parent, Widget):
-            panel: Widget = self.parent
-            panel.border_title = f"{self.score} Points"
-
-        def _starts_with_search(w: Word) -> bool:
-            if not self.search:
-                return True
-            return w.value.startswith(self.search)
-
-        def _make_text(w: Word) -> Text:
-            return Text(
-                w.value.capitalize(),
-                style = "yellow" if w.pangram else ""
-            )
-
         # List of correct answers
         words = list(
             map(
-                _make_text,
+                self._make_text,
                 filter(
-                    _starts_with_search,
+                    self._starts_with_search,
                     sorted(
                         self.answers,
                         key = lambda x: x.value
@@ -69,18 +90,14 @@ class Answers(Static):
             )
         )
 
-        n_searched = len(words)
-        n_total = len(self.answers)
-
-        # Count of correct answers
-        count = Text(str(n_searched)) \
-              + Text.styled("/", "grey30") \
-              + Text(str(n_total))
-        count.align("right", self.size.width)
-
-        return Text(linesep).join(
-            [count] + words
+        # Count of words matching pattern, out of
+        # the total number of words
+        count = self._make_count(
+            len(words),
+            len(self.answers)
         )
+
+        return Text(linesep).join((count, *words))
 
 
 class AnswerSearch(Input):
@@ -88,7 +105,7 @@ class AnswerSearch(Input):
     answers.
     '''
     def __init__(self) -> None:
-        super().__init__(id="answer-search")
+        super().__init__()
         self.on_blur(Blur())
 
     def on_blur(self, _: Blur) -> None:
@@ -96,11 +113,3 @@ class AnswerSearch(Input):
 
     def on_focus(self, _: Focus) -> None:
         self.placeholder = "To search just type"
-
-    def on_input_changed(self, event: Input.Changed) -> None:
-        # TODO: Restructure so we don't have to access
-        #   parent.
-        if not self.parent:
-            return
-        answers = self.parent.query_one(Answers)
-        answers.search = event.value.lower()

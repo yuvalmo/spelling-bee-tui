@@ -52,15 +52,15 @@ Input:focus {
     padding: 1;
 }
 
-#answer-panel {
+Answers {
     border-title-align: right;
 }
 
-#answers {
+Answers > AnswerList {
     padding: 1 2;
 }
 
-#answer-search {
+Answers > AnswerSearch {
     margin: 0 1;
     dock: bottom;
 }
