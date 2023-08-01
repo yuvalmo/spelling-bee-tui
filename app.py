@@ -3,6 +3,9 @@
 from functools import partial
 from argparse import ArgumentParser, ArgumentTypeError
 
+from rich.console import Console
+from rich.text import Text
+
 from src.game import Game
 from src.history import History
 from src.letters import Letters
@@ -67,13 +70,18 @@ def play(args):
 
 def list_saves(_):
     history = History()
+    console = Console()
 
     for save in history.list():
         game = history.load(save)
+
+        name = Text(str(save))
+        name.stylize("yellow", 0, 1)
+
         if not game:
-            print(f"{save} | NA")
+            console.print(name, "| NA")
         else:
-            print(f"{save} | {game.score}p")
+            console.print(name, "|", game.score)
 
 
 def main():
