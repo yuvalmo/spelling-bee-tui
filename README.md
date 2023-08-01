@@ -1,9 +1,9 @@
 # 🐝Spelling Bee🐝
 My own version of the *New York Time's Spelling Bee*.
 
-See original game [here](https://www.nytimes.com/puzzles/spelling-bee).
+![screenshot](images/screenshot.png)
 
-© New York Times
+© New York Times. See original game [here](https://www.nytimes.com/puzzles/spelling-bee).
 
 # Install
 To play you must first install dependencies by running:
