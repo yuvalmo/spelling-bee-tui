@@ -1,5 +1,5 @@
 # 🐝Spelling Bee🐝
-My own version of the *New York Time's Spelling Bee*.
+My TUI clone of the *New York Time's Spelling Bee*.
 
 ![screenshot](images/screenshot.png)
 
