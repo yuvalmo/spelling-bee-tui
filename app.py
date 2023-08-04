@@ -69,9 +69,16 @@ def play(args):
         history.save(game)
 
 
+def show(game: Game) -> None:
+    name = Text(str(game.letters))
+    name.stylize("yellow", 0, 1)
+
+    console = Console()
+    console.print(name, "|", game.score)
+
+
 def list_saves(args):
     history = History()
-    console = Console()
 
     games = list(
         history.load(save) for save in history.list()
@@ -92,11 +99,7 @@ def list_saves(args):
     for game in games:
         if not game:
             continue
-
-        name = Text(str(game.letters))
-        name.stylize("yellow", 0, 1)
-
-        console.print(name, "|", game.score)
+        show(game)
 
 
 def main():
