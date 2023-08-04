@@ -42,16 +42,17 @@ def parser() -> ArgumentParser:
 
     list_parser = subparsers.add_parser("list")
     list_parser.set_defaults(func = list_saves)
+    list_parser.add_argument(
+        "--sort-by-score", "-s",
+        action="store_true",
+        help="Show games from best to worst."
+    )
 
     return parser
 
-def play(args):
-    # The first letter is the central one
-    letters = Letters(
-        args.letters[:1],
-        args.letters[1:]
-    )
 
+def play(args):
+    letters = Letters.fromstr(args.letters)
     history = History()
 
     if args.new_game:
@@ -68,20 +69,34 @@ def play(args):
         history.save(game)
 
 
-def list_saves(_):
+def list_saves(args):
     history = History()
     console = Console()
 
-    for save in history.list():
-        game = history.load(save)
+    games = list(
+        history.load(save) for save in history.list()
+    )
 
-        name = Text(str(save))
+    if args.sort_by_score:
+        # Sort from best score to worst
+        games.sort(
+            reverse=True,
+            key=lambda x: x.score if x else 0
+        )
+    else:
+        # Sort alphabetically
+        games.sort(
+            key=lambda x: str(x.letters) if x else ""
+        )
+
+    for game in games:
+        if not game:
+            continue
+
+        name = Text(str(game.letters))
         name.stylize("yellow", 0, 1)
 
-        if not game:
-            console.print(name, "| NA")
-        else:
-            console.print(name, "|", game.score)
+        console.print(name, "|", game.score)
 
 
 def main():
