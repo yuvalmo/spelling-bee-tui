@@ -40,6 +40,11 @@ class Hive(Static):
         self.letters = random.sample(self.letters,
                                      len(self.letters))
 
+        # Make hive re-appear
+        self.styles.opacity = 0.0
+        self.styles.animate("opacity", value=1.0, duration=0.5)
+
+
     def render(self) -> RenderableType:
         h = HEX
 
