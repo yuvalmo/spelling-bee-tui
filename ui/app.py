@@ -58,7 +58,7 @@ class SpellingBee(App[Game]):
 
     @on(Input.Submitted, selector="#textbox")
     def on_input_submitted(self, event: Input.Submitted) -> None:
-        word = event.value
+        word = event.value.lower()
 
         # No point in checking an empty word
         if not word:
